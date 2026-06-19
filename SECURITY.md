@@ -7,7 +7,6 @@ Security fixes are provided for the currently maintained package lines:
 | Version | Supported |
 | ------- | --------- |
 | 6.0.x | Yes |
-| 5.5.x | Yes |
 
 ## Reporting a Vulnerability
 
