@@ -1,0 +1,179 @@
+{% trans_default_domain 'sfs_cms_seo' %}
+
+{% extends '@SfsCms/admin_layout.html.twig' %}
+
+{% block title %}{{ 'seo.meta.title'|trans({'%name%': content_entity.name}) }}{% endblock %}
+
+{% block breadcrums_content %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ url('sfs_cms_admin_content_'~content_type~'_list') }}">{{ ('admin_'~content_type~'.list.breadcrumb')|trans({}, 'sfs_cms_contents') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('sfs_cms_admin_content_'~content_type~'_details', {'content': content_entity.id}) }}">{{ ('admin_'~content_type~'.read.breadcrumb')|trans({'%name%': content_entity.name}, 'sfs_cms_contents') }}</a></li>
+    <li class="breadcrumb-item active" aria-current="content">{{ 'seo.breadcrumb'|trans }}</li>
+{% endblock breadcrums_content %}
+
+{% block content %}
+    {% include ['@content/'~content_type~'/admin/_content_title.html.twig', '@SfsCms/admin/content/_content_title.html.twig'] with {'current': 'seo-analysis', 'content_type': content_type, 'content_entity': content_entity} %}
+    {% include ['@content/'~content_type~'/admin/_content_tabs.html.twig', '@SfsCms/admin/content/_content_tabs.html.twig'] with {'current': 'seo-analysis', 'content': content, 'content_entity': content_entity} %}
+
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+            <div>
+                <h2 class="h4 mb-1">{{ 'seo.title'|trans }}</h2>
+                <p class="text-body-secondary mb-0">{{ 'seo.description'|trans }}</p>
+            </div>
+            {% if target_version %}
+                <form method="post">
+                    <button type="submit" name="refresh" value="1" class="btn btn-primary text-nowrap">
+                        {{ 'seo.refresh_button'|trans }}
+                    </button>
+                </form>
+            {% endif %}
+        </div>
+
+        {% if target_version %}
+            <div class="alert alert-{{ loaded_from_storage ? 'info' : 'success' }} small">
+                {{ (loaded_from_storage ? 'seo.loaded_from_version' : 'seo.stored_in_version')|trans({
+                    '%version%': target_version.versionNumber,
+                    '%date%': stored_analysis.analyzedAt|default('')
+                }) }}
+            </div>
+            {% if compiled_content_warning %}
+                <div class="alert alert-warning small">
+                    {{ 'seo.compiled_content_warning'|trans }}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-warning small">
+                {{ 'seo.no_target_version'|trans }}
+            </div>
+        {% endif %}
+
+        {% if rows is empty %}
+            <div class="alert alert-warning">{{ 'seo.no_urls'|trans }}</div>
+        {% else %}
+            <div class="row g-3 mb-3">
+                <div class="col-12 col-md-3">
+                    <div class="card h-100"><div class="card-body"><div class="text-body-secondary small">{{ 'summary.score'|trans }}</div><div class="h3 mb-0">{{ summary.score }}/100</div></div></div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100"><div class="card-body"><div class="text-body-secondary small">{{ 'summary.urls'|trans }}</div><div class="h3 mb-0">{{ summary.urls }}</div></div></div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100"><div class="card-body"><div class="text-body-secondary small">{{ 'summary.errors'|trans }}</div><div class="h3 mb-0 text-danger">{{ summary.errors }}</div></div></div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="card h-100"><div class="card-body"><div class="text-body-secondary small">{{ 'summary.warnings'|trans }}</div><div class="h3 mb-0 text-warning">{{ summary.warnings }}</div></div></div>
+                </div>
+            </div>
+
+            <div class="alert alert-info small">
+                {{ 'seo.future_note'|trans }}
+            </div>
+
+            <div class="card mb-3">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover mb-0 align-middle">
+                        <thead>
+                            <tr>
+                                <th>{{ 'table.url'|trans }}</th>
+                                <th>{{ 'table.site'|trans }}</th>
+                                <th>{{ 'table.locale'|trans }}</th>
+                                <th class="text-end">{{ 'summary.score'|trans }}</th>
+                                <th>{{ 'table.http_status'|trans }}</th>
+                                <th>{{ 'table.status'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in rows %}
+                                <tr>
+                                    <td><a href="{{ row.pageUrl.url }}" target="_blank" rel="noopener noreferrer">{{ row.pageUrl.path }}</a></td>
+                                    <td>{{ row.pageUrl.site.id|default(row.pageUrl.site) }}</td>
+                                    <td>{{ row.pageUrl.locale }}</td>
+                                    <td class="text-end">{{ row.analysis.score }}/100</td>
+                                    <td>{{ row.page.statusCode|default('-') }}</td>
+                                    <td>
+                                        <span class="badge text-bg-{{ row.analysis.severity == 'error' ? 'danger' : (row.analysis.severity == 'warning' ? 'warning' : 'success') }}">
+                                            {{ ('severity.'~row.analysis.severity)|trans }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="accordion" id="seo-analysis-results">
+                {% for row in rows %}
+                    <div class="accordion-item">
+                        <h3 class="accordion-header" id="seo-analysis-heading-{{ loop.index }}">
+                            <button class="accordion-button {{ loop.first ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#seo-analysis-collapse-{{ loop.index }}" aria-expanded="{{ loop.first ? 'true' : 'false' }}" aria-controls="seo-analysis-collapse-{{ loop.index }}">
+                                {{ row.pageUrl.path }} · {{ row.analysis.score }}/100
+                            </button>
+                        </h3>
+                        <div id="seo-analysis-collapse-{{ loop.index }}" class="accordion-collapse collapse {{ loop.first ? 'show' : '' }}" aria-labelledby="seo-analysis-heading-{{ loop.index }}" data-bs-parent="#seo-analysis-results">
+                            <div class="accordion-body">
+                                {% if row.analysis.metrics is not empty %}
+                                    <div class="row g-2 mb-3 small text-body-secondary">
+                                        <div class="col-6 col-md-2">{{ 'metrics.title_length'|trans }}: {{ row.analysis.metrics.titleLength }}</div>
+                                        <div class="col-6 col-md-2">{{ 'metrics.description_length'|trans }}: {{ row.analysis.metrics.descriptionLength }}</div>
+                                        <div class="col-6 col-md-2">{{ 'metrics.h1_count'|trans }}: {{ row.analysis.metrics.h1Count }}</div>
+                                        <div class="col-6 col-md-2">{{ 'metrics.h2_count'|trans }}: {{ row.analysis.metrics.h2Count }}</div>
+                                        <div class="col-6 col-md-2">{{ 'metrics.images_without_alt'|trans }}: {{ row.analysis.metrics.imagesWithoutAlt }}</div>
+                                        <div class="col-6 col-md-2">{{ 'metrics.word_count'|trans }}: {{ row.analysis.metrics.wordCount }}</div>
+                                    </div>
+                                {% endif %}
+
+                                <div class="list-group">
+                                    {% set row_index = loop.index %}
+                                    {% for check in row.analysis.checks %}
+                                        {% set check_id = 'seo-check-'~row_index~'-'~loop.index %}
+                                        <div class="list-group-item p-0">
+                                            <button class="btn btn-link w-100 text-start text-decoration-none p-3 d-flex justify-content-between align-items-start gap-3" type="button" data-bs-toggle="collapse" data-bs-target="#{{ check_id }}" aria-expanded="false" aria-controls="{{ check_id }}">
+                                                <span>
+                                                    <span class="fw-semibold text-body">{{ ('checks.'~check.code~'.title')|trans }}</span>
+                                                    <span class="d-block text-body-secondary small">{{ ('checks.'~check.code~'.description')|trans(check.data) }}</span>
+                                                </span>
+                                                <span class="badge text-bg-{{ check.severity == 'error' ? 'danger' : (check.severity == 'warning' ? 'warning' : (check.severity == 'info' ? 'info' : 'success')) }} text-nowrap">
+                                                    {{ ('severity.'~check.severity)|trans }} · {{ check.score }}/100
+                                                </span>
+                                            </button>
+                                            <div id="{{ check_id }}" class="collapse">
+                                                <div class="border-top px-3 py-3 bg-body-tertiary">
+                                                    {% if check.details is empty %}
+                                                        <div class="text-body-secondary small">{{ 'details.empty'|trans }}</div>
+                                                    {% else %}
+                                                        <dl class="row mb-0 small">
+                                                            {% for name, value in check.details %}
+                                                                <dt class="col-12 col-md-3 text-body-secondary">{{ ('details.'~name)|trans }}</dt>
+                                                                <dd class="col-12 col-md-9">
+                                                                    {% if value is iterable %}
+                                                                        {% if value is empty %}
+                                                                            <span class="text-body-secondary">{{ 'details.none'|trans }}</span>
+                                                                        {% else %}
+                                                                            <ul class="mb-0 ps-3">
+                                                                                {% for item in value %}
+                                                                                    <li><code class="text-wrap">{{ item }}</code></li>
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        <code class="text-wrap">{{ value }}</code>
+                                                                    {% endif %}
+                                                                </dd>
+                                                            {% endfor %}
+                                                        </dl>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

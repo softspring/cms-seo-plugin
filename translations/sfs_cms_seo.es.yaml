@@ -1,0 +1,189 @@
+seo:
+    meta:
+        title: "Análisis SEO de %name%"
+    breadcrumb: "SEO"
+    title: "Análisis SEO"
+    description: "Comprobaciones SEO básicas sobre cada URL CMS publicada de este contenido."
+    no_urls: "Este contenido no tiene URLs configuradas para analizar."
+    no_target_version: "No hay una versión publicada donde guardar este análisis."
+    refresh_button: "Actualizar datos"
+    loaded_from_version: "Mostrando el resultado guardado en el meta de la versión v%version% el %date%."
+    stored_in_version: "Resultado guardado en el meta de la versión v%version% el %date%."
+    compiled_content_warning: "Los datos pueden no ser frescos porque esta versión tiene el contenido compilado guardado en base de datos. Recompila o limpia el contenido compilado si necesitas analizar el HTML recién renderizado."
+    future_note: "Esta primera versión usa comprobaciones deterministas sobre el HTML publicado. El plugin queda estructurado para añadir más adelante análisis por IA y proveedores externos como SEMrush o Ahrefs."
+
+site_seo:
+    meta:
+        title: "SEO de %name%"
+    breadcrumb: "SEO"
+    title: "SEO de %name%"
+    description: "Comprobaciones de site para robots.txt, indices de sitemap y sitemaps configurados."
+    refresh_button: "Actualizar datos"
+    loaded_from_storage: "Mostrando el analisis de site guardado el %date%."
+    no_analysis: "Aun no hay un analisis de site guardado."
+    checks:
+        title: "Comprobaciones"
+        empty: "Aun no hay comprobaciones que mostrar."
+
+dashboard:
+    meta:
+        title: "SEO"
+    breadcrumb: "SEO"
+    title: "SEO"
+    description: "Resumen de contenidos publicados con análisis SEO guardado."
+    empty: "No hay resultados SEO calculados todavía."
+    stats:
+        average_score: "Puntuación media"
+        analyzed: "Analizados"
+        pending: "Pendientes"
+        urls: "URLs analizadas"
+    worst_contents:
+        title: "Contenidos con peor puntuación"
+    worst_urls:
+        title: "URLs con peor puntuación"
+    sites:
+        title: "Sites"
+        description: "Comprobaciones SEO de site para robots.txt, índices de sitemap y sitemaps configurados."
+        stats:
+            average_score: "Puntuación media"
+            analyzed: "Analizados"
+        table:
+            host: "Host"
+            checked_at: "Comprobado el"
+    table:
+        content: "Contenido"
+        type: "Tipo"
+    actions:
+        seo: "SEO"
+        refresh_sites: "Analizar sites"
+        refresh_contents: "Analizar todos los contenidos"
+    content_types:
+        article: "Artículo"
+        page: "Página"
+        project: "Proyecto"
+        technology: "Tecnología"
+
+summary:
+    score: "Puntuación"
+    urls: "URLs"
+    errors: "Errores"
+    warnings: "Avisos"
+    issues: "Incidencias"
+
+read_indexing:
+    seo:
+        title: "Análisis SEO"
+        view:
+            link: "Ver análisis"
+        analyzed_at: "Calculado el %date%"
+
+metrics:
+    title_length: "Título"
+    description_length: "Descripción"
+    h1_count: "H1"
+    h2_count: "H2"
+    images_without_alt: "Imágenes sin alt"
+    word_count: "Palabras"
+
+table:
+    url: "URL"
+    site: "Site"
+    locale: "Locale"
+    http_status: "HTTP"
+    status: "Estado"
+
+severity:
+    ok: "OK"
+    info: "Info"
+    warning: "Aviso"
+    error: "Error"
+
+details:
+    empty: "No hay detalles disponibles para esta comprobación."
+    none: "No detectado"
+    value: "Valor detectado"
+    length: "Longitud"
+    recommended: "Recomendado"
+    expected_path: "Ruta esperada"
+    actual_path: "Ruta detectada"
+    count: "Cantidad"
+    values: "Valores detectados"
+    h2_count: "Encabezados H2"
+    image_count: "Imágenes"
+    missing_alt: "Sin alt"
+    word_count: "Palabras"
+    robots: "Robots"
+    error: "Error"
+    url: "URL"
+    status_code: "Estado HTTP"
+    content_type: "Content-Type"
+    expected: "Esperado"
+    found: "Encontrado"
+    missing: "Falta"
+    invalid_hrefs: "URLs inválidas"
+    errors: "Errores"
+
+checks:
+    fetch_error:
+        title: "No se ha podido descargar la página publicada"
+        description: "Comprueba que la URL sea accesible desde el contenedor de la aplicación y que el dominio/proxy local funcione."
+    http_status:
+        title: "La página no devuelve un estado HTTP correcto"
+        description: "Las páginas publicadas deberían devolver una respuesta HTTP 2xx antes de confiar en el análisis SEO."
+    html_content_type:
+        title: "La respuesta no es HTML"
+        description: "Las comprobaciones SEO necesitan una respuesta text/html."
+    title:
+        title: "Título de página"
+        description: "Usa un título descriptivo entre 30 y 65 caracteres."
+    meta_description:
+        title: "Meta description"
+        description: "Usa una meta description descriptiva entre 70 y 160 caracteres."
+    canonical:
+        title: "URL canonical"
+        description: "Añade una URL canonical que apunte a esta página publicada."
+    alternates:
+        title: "URLs alternates por idioma"
+        description: "Genera un enlace rel=alternate hreflang por cada locale publicado de este site."
+    h1:
+        title: "Encabezado H1"
+        description: "Usa exactamente un encabezado H1 en la página."
+    h1_missing:
+        title: "Falta el encabezado H1"
+        description: "Añade un H1 visible que describa el tema de la página."
+    h1_multiple:
+        title: "Hay varios encabezados H1"
+        description: "Mantén un único H1 principal y mueve los encabezados secundarios a H2 o niveles inferiores."
+    heading_structure:
+        title: "Estructura de encabezados"
+        description: "Usa encabezados H2 para dividir la página en secciones escaneables cuando el contenido lo justifique."
+    image_alt:
+        title: "Texto alternativo de imágenes"
+        description: "Añade textos alt útiles a las imágenes informativas. Las decorativas pueden usar alt vacío de forma intencionada."
+    robots:
+        title: "Meta robots"
+        description: "La página es indexable según su meta robots."
+    robots_noindex:
+        title: "Se ha encontrado robots noindex"
+        description: "Elimina noindex si esta página publicada debe aparecer en resultados de búsqueda."
+    word_count:
+        title: "Longitud del contenido"
+        description: "Las páginas cortas pueden posicionar, pero las páginas estratégicas suelen necesitar suficiente texto útil para explicar el tema."
+    robots_reachable:
+        title: "robots.txt accesible"
+        description: "El endpoint robots.txt del site debería ser público y servirse como text/plain."
+    robots_sitemap_index:
+        title: "robots.txt expone el índice de sitemap"
+        description: "Cuando hay un índice de sitemap configurado, robots.txt debería apuntar los crawlers a él."
+    sitemap_index_reachable:
+        title: "Índice de sitemap accesible"
+        description: "El índice de sitemap configurado debería devolver una respuesta XML correcta."
+    sitemap_index_contains_configured_sitemaps:
+        title: "El índice contiene los sitemaps configurados"
+        description: "El índice de sitemap debería incluir cada sitemap configurado y cada sitemap externo."
+    sitemap_reachable:
+        title: "Sitemaps configurados accesibles"
+        description: "Cada URL de sitemap configurada debería devolver una respuesta XML correcta."
+    slash_route_redirect:
+        title: "La raíz redirige a una ruta localizada"
+        description: "Cuando slash_route está activo, la raíz del site debería redirigir a una de las raíces localizadas configuradas."

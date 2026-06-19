@@ -1,0 +1,18 @@
+{
+    "name": "softspring/cms-seo-plugin",
+    "description": "SEO analysis plugin for Softspring CMS.",
+    "license": "proprietary",
+    "type": "sfs-cms-plugin",
+    "require": {
+        "php": ">=8.4",
+        "softspring/cms-bundle": "^6.0@dev",
+        "symfony/http-client": "^6.4 || ^7.4 || ^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Softspring\\CmsSeoPlugin\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

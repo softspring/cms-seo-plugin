@@ -1,0 +1,89 @@
+{% trans_default_domain 'sfs_cms_contents' %}
+
+{% set seo_analysis = content_entity.publishedVersion.meta.sfs_cms_seo_analysis|default(null) %}
+
+{% embed '@SfsCms/admin/_embeds/_card.html.twig' with {'title': ('admin_'~content_type~'.read.indexing.title')|trans, 'seo_analysis': seo_analysis} %}
+    {% trans_default_domain 'sfs_cms_contents' %}
+
+    {% block title %}
+        <h5 class="border-bottom border-1 border-light pb-2 mb-3 d-flex align-items-center justify-content-between gap-2">
+            <span>{{ title }}</span>
+            {% if not content_config.admin.update.is_granted or is_granted(content_config.admin.update.is_granted, content_entity) %}
+                <a class="btn btn-sm btn-outline-secondary flex-shrink-0" href="{{ url('sfs_cms_admin_content_'~content_type~'_update', {'content':content_entity.id}) }}">{{ ('admin_'~content_type~'.read.indexing.edit.link')|trans }} <i class="bi bi-link-45deg"></i></a>
+            {% else %}
+                <a class="btn btn-sm btn-outline-secondary flex-shrink-0 disabled">{{ ('admin_'~content_type~'.read.indexing.edit.link')|trans }} <i class="bi bi-link-45deg"></i></a>
+            {% endif %}
+        </h5>
+    {% endblock %}
+
+    {% block content %}
+        <div class="row g-2 small">
+            <div class="col-12 col-md-4">
+                <div>
+                    <div class="text-muted">{{ ('admin_'~content_type~'.read.indexing.noIndex.label')|trans }}</div>
+                    <div class="fw-bold">
+                        {% if content_entity.indexing.noIndex|default(false) %}
+                            <span class="badge bg-warning">{{ ('admin_'~content_type~'.read.indexing.noIndex.yes')|trans }}</span>
+                        {% else %}
+                            <span class="badge bg-success">{{ ('admin_'~content_type~'.read.indexing.noIndex.no')|trans }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div>
+                    <div class="text-muted">{{ ('admin_'~content_type~'.read.indexing.noFollow.label')|trans }}</div>
+                    <div class="fw-bold">
+                        {% if content_entity.indexing.noFollow|default(false) %}
+                            <span class="badge bg-warning">{{ ('admin_'~content_type~'.read.indexing.noFollow.yes')|trans }}</span>
+                        {% else %}
+                            <span class="badge bg-success">{{ ('admin_'~content_type~'.read.indexing.noFollow.no')|trans }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div>
+                    <div class="text-muted">{{ ('admin_'~content_type~'.read.indexing.sitemap.label')|trans }}</div>
+                    <div class="fw-bold">
+                        {% if content_entity.indexing.sitemap|default(false) %}
+                            <span class="badge bg-success">{{ ('admin_'~content_type~'.read.indexing.sitemap.yes')|trans }}</span>
+                        {% else %}
+                            <span class="badge bg-warning">{{ ('admin_'~content_type~'.read.indexing.sitemap.no')|trans }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if seo_analysis %}
+            {% set seo_summary = seo_analysis.summary|default({}) %}
+            <div class="border-top border-1 border-light mt-3 pt-3" data-controller="sfs-cms-seo-read-indexing">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                    <h6 class="mb-0">{{ 'read_indexing.seo.title'|trans({}, 'sfs_cms_seo') }}</h6>
+                    <a class="btn btn-sm btn-outline-secondary flex-shrink-0" href="{{ url('sfs_cms_admin_content_'~content_type~'_seo_analysis', {'content': content_entity.id}) }}">
+                        {{ 'read_indexing.seo.view.link'|trans({}, 'sfs_cms_seo') }} <i class="bi bi-link-45deg"></i>
+                    </a>
+                </div>
+
+                <div class="row g-2 small" {% if seo_analysis.analyzedAt|default(null) %}title="{{ 'read_indexing.seo.analyzed_at'|trans({'%date%': seo_analysis.analyzedAt}, 'sfs_cms_seo') }}"{% endif %}>
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-2 h-100">
+                            <div class="text-muted">{{ 'summary.score'|trans({}, 'sfs_cms_seo') }}</div>
+                            <div class="fw-bold">{{ seo_summary.score|default(0) }}/100</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="border rounded p-2 h-100">
+                            <div class="text-muted">{{ 'summary.issues'|trans({}, 'sfs_cms_seo') }}</div>
+                            <div class="d-flex flex-wrap gap-2 fw-bold">
+                                <span class="text-danger">{{ 'summary.errors'|trans({}, 'sfs_cms_seo') }}: {{ seo_summary.errors|default(0) }}</span>
+                                <span class="text-warning">{{ 'summary.warnings'|trans({}, 'sfs_cms_seo') }}: {{ seo_summary.warnings|default(0) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endembed %}

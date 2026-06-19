@@ -1,0 +1,105 @@
+{% trans_default_domain 'sfs_cms_seo' %}
+
+{% extends '@SfsCms/admin_layout.html.twig' %}
+
+{% block title %}{{ 'site_seo.meta.title'|trans({'%name%': site|sfs_cms_site_name}) }}{% endblock %}
+
+{% block breadcrums_content %}
+    {{ parent() }}
+    <li class="breadcrumb-item"><a href="{{ url('sfs_cms_admin_sites_list') }}">{{ 'admin_sites.list.breadcrumb'|trans({}, 'sfs_cms_admin') }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ url('sfs_cms_admin_sites_read', {'site': site.id}) }}">{{ 'admin_sites.read.breadcrumb'|trans({'%name%': site|sfs_cms_site_name}, 'sfs_cms_admin') }}</a></li>
+    <li class="breadcrumb-item active" aria-current="content">{{ 'site_seo.breadcrumb'|trans }}</li>
+{% endblock breadcrums_content %}
+
+{% block content %}
+    <div class="container-fluid py-4">
+        {% embed '@SfsCms/admin/site/_site_title.html.twig' with {'site': site} only %}
+            {% block actions %}
+            <form method="post" action="{{ url('sfs_cms_admin_sites_seo', {'site': site.id}) }}">
+                <input type="hidden" name="refresh" value="1">
+                <input type="hidden" name="_token" value="{{ csrf_token('sfs_cms_seo_analyze_site_'~site.id) }}">
+                <button type="submit" class="btn btn-sm btn-primary">{{ 'site_seo.refresh_button'|trans }}</button>
+            </form>
+            {% endblock %}
+        {% endembed %}
+
+        {% include '@SfsCms/admin/site/_site_tabs.html.twig' with {'current': 'seo', 'site': site} %}
+        <p class="text-body-secondary mb-3">{{ 'site_seo.description'|trans }}</p>
+
+        {% if loaded_from_storage and row.analyzedAt|default(null) %}
+            <div class="alert alert-info">{{ 'site_seo.loaded_from_storage'|trans({'%date%': row.analyzedAt}) }}</div>
+        {% elseif row.analyzedAt|default(null) is empty %}
+            <div class="alert alert-secondary">{{ 'site_seo.no_analysis'|trans }}</div>
+        {% endif %}
+
+        <div class="row g-3 mb-4">
+            <div class="col-12 col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-body-secondary small">{{ 'summary.score'|trans }}</div>
+                        <div class="h3 mb-0">{{ analysis.score|default(0) }}/100</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-body-secondary small">{{ 'table.status'|trans }}</div>
+                        {% set severity = analysis.severity|default('ok') %}
+                        <span class="badge text-bg-{{ severity == 'error' ? 'danger' : (severity == 'warning' ? 'warning' : (severity == 'info' ? 'info' : 'success')) }}">{{ ('severity.'~severity)|trans }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="text-body-secondary small">{{ 'dashboard.sites.table.host'|trans }}</div>
+                        <div class="fw-semibold">{{ row.site.scheme|default(site.canonicalScheme) }}://{{ row.site.host|default(site.canonicalHost) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <h2 class="h5 mb-0">{{ 'site_seo.checks.title'|trans }}</h2>
+            </div>
+            <div class="card-body">
+                {% if analysis.checks|default([]) is not empty %}
+                    <div class="row g-3">
+                        {% for check in analysis.checks %}
+                            <div class="col-12 col-xl-6">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="d-flex align-items-start justify-content-between gap-2">
+                                        <div>
+                                            <h3 class="h6 mb-1">{{ ('checks.'~check.code~'.title')|trans }}</h3>
+                                            <p class="text-body-secondary small mb-0">{{ ('checks.'~check.code~'.description')|trans(check.data) }}</p>
+                                        </div>
+                                        <span class="badge text-bg-{{ check.severity == 'error' ? 'danger' : (check.severity == 'warning' ? 'warning' : (check.severity == 'info' ? 'info' : 'success')) }}">{{ check.score }}/100</span>
+                                    </div>
+
+                                    {% if check.details is not empty %}
+                                        <dl class="row small mb-0 mt-3">
+                                            {% for key, value in check.details %}
+                                                <dt class="col-4 text-body-secondary">{{ ('details.'~key)|trans }}</dt>
+                                                <dd class="col-8 mb-1">
+                                                    {% if value is iterable %}
+                                                        {{ value|join(', ') ?: '-' }}
+                                                    {% else %}
+                                                        {{ value ?: '-' }}
+                                                    {% endif %}
+                                                </dd>
+                                            {% endfor %}
+                                        </dl>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-body-secondary mb-0">{{ 'site_seo.checks.empty'|trans }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

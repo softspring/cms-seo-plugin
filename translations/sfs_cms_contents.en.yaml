@@ -1,0 +1,5 @@
+admin_page:
+    seo:
+        title: "%name% SEO analysis"
+    seo-analysis:
+        title: "%name% SEO analysis"

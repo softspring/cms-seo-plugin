@@ -1,0 +1,55 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Softspring\CmsSeoPlugin\:
+        resource: '../../src/*'
+        exclude: '../../src/DependencyInjection/*'
+
+    Softspring\CmsSeoPlugin\Seo\SeoAnalysisDispatcherInterface:
+        alias: Softspring\CmsSeoPlugin\Seo\SyncSeoAnalysisDispatcher
+
+    Softspring\CmsSeoPlugin\Content\Check\ChecksLoader:
+        arguments:
+            $checks: !tagged_iterator sfs_cms_seo.check
+
+    Softspring\CmsSeoPlugin\Site\Check\SiteChecksLoader:
+        arguments:
+            $checks: !tagged_iterator sfs_cms_seo.site_check
+
+    Softspring\CmsSeoPlugin\Site\SiteAnalyzer:
+        arguments:
+            $config: '%sfs_cms_seo.site_analysis%'
+
+    Softspring\CmsSeoPlugin\Site\SiteAnalysisStorage:
+        arguments:
+            $storageDir: '%kernel.project_dir%/var/sfs_cms_seo/site-analysis'
+
+    Softspring\CmsSeoPlugin\Admin\Menu\ContentMenuProvider:
+        tags: [ 'sfs_cms.admin_menu.menu_provider' ]
+
+    Softspring\CmsSeoPlugin\Admin\Menu\SiteMenuProvider:
+        tags: [ 'sfs_cms.admin_menu.menu_provider' ]
+
+    Softspring\CmsSeoPlugin\Admin\Routing\ContentTypeRoutingProvider:
+        tags: [ 'sfs_cms.routing_provider' ]
+
+    Softspring\CmsSeoPlugin\Admin\Routing\SiteRoutingProvider:
+        tags: [ 'sfs_cms.routing_provider' ]
+
+    Softspring\CmsSeoPlugin\Admin\Routing\AdminRoutingProvider:
+        tags: [ 'sfs_cms.routing_provider' ]
+
+    sfs_cms.seo_plugin.admin.content_seo.controller:
+        class: Softspring\CmsSeoPlugin\Controller\Admin\ContentSeoController
+        public: true
+
+    sfs_cms.seo_plugin.admin.site_seo.controller:
+        class: Softspring\CmsSeoPlugin\Controller\Admin\SiteSeoController
+        public: true
+
+    sfs_cms.seo_plugin.admin.dashboard.controller:
+        class: Softspring\CmsSeoPlugin\Controller\Admin\SeoDashboardController
+        public: true

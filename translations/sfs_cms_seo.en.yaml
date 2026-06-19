@@ -1,0 +1,189 @@
+seo:
+    meta:
+        title: "%name% SEO analysis"
+    breadcrumb: "SEO"
+    title: "SEO analysis"
+    description: "Basic SEO checks against each published CMS URL for this content."
+    no_urls: "This content has no configured URLs to analyze."
+    no_target_version: "There is no published version where this analysis can be stored."
+    refresh_button: "Update data"
+    loaded_from_version: "Showing the result stored in version v%version% meta at %date%."
+    stored_in_version: "Result stored in version v%version% meta at %date%."
+    compiled_content_warning: "Data may not be fresh because this version stores compiled content in the database. Recompile or clear compiled content if you need to analyze newly rendered HTML."
+    future_note: "This first version uses deterministic checks on the published HTML. The plugin is structured so AI analysis and external providers such as SEMrush or Ahrefs can be added later."
+
+site_seo:
+    meta:
+        title: "%name% SEO"
+    breadcrumb: "SEO"
+    title: "%name% SEO"
+    description: "Site-level checks for robots.txt, sitemap indexes and configured sitemaps."
+    refresh_button: "Update data"
+    loaded_from_storage: "Showing the stored site analysis from %date%."
+    no_analysis: "There is no stored site analysis yet."
+    checks:
+        title: "Checks"
+        empty: "There are no checks to show yet."
+
+dashboard:
+    meta:
+        title: "SEO"
+    breadcrumb: "SEO"
+    title: "SEO"
+    description: "Summary of published content with stored SEO analysis."
+    empty: "There are no calculated SEO results yet."
+    stats:
+        average_score: "Average score"
+        analyzed: "Analyzed"
+        pending: "Pending"
+        urls: "Analyzed URLs"
+    worst_contents:
+        title: "Lowest scoring content"
+    worst_urls:
+        title: "Lowest scoring URLs"
+    sites:
+        title: "Sites"
+        description: "Site-level SEO checks for robots.txt, sitemap indexes and configured sitemaps."
+        stats:
+            average_score: "Average score"
+            analyzed: "Analyzed"
+        table:
+            host: "Host"
+            checked_at: "Checked at"
+    table:
+        content: "Content"
+        type: "Type"
+    actions:
+        seo: "SEO"
+        refresh_sites: "Analyze sites"
+        refresh_contents: "Analyze all content"
+    content_types:
+        article: "Article"
+        page: "Page"
+        project: "Project"
+        technology: "Technology"
+
+summary:
+    score: "Score"
+    urls: "URLs"
+    errors: "Errors"
+    warnings: "Warnings"
+    issues: "Issues"
+
+read_indexing:
+    seo:
+        title: "SEO analysis"
+        view:
+            link: "View analysis"
+        analyzed_at: "Calculated at %date%"
+
+metrics:
+    title_length: "Title"
+    description_length: "Description"
+    h1_count: "H1"
+    h2_count: "H2"
+    images_without_alt: "Images without alt"
+    word_count: "Words"
+
+table:
+    url: "URL"
+    site: "Site"
+    locale: "Locale"
+    http_status: "HTTP"
+    status: "Status"
+
+severity:
+    ok: "OK"
+    info: "Info"
+    warning: "Warning"
+    error: "Error"
+
+details:
+    empty: "No details are available for this check."
+    none: "Not detected"
+    value: "Detected value"
+    length: "Length"
+    recommended: "Recommended"
+    expected_path: "Expected path"
+    actual_path: "Detected path"
+    count: "Count"
+    values: "Detected values"
+    h2_count: "H2 headings"
+    image_count: "Images"
+    missing_alt: "Without alt"
+    word_count: "Words"
+    robots: "Robots"
+    error: "Error"
+    url: "URL"
+    status_code: "HTTP status"
+    content_type: "Content-Type"
+    expected: "Expected"
+    found: "Found"
+    missing: "Missing"
+    invalid_hrefs: "Invalid URLs"
+    errors: "Errors"
+
+checks:
+    fetch_error:
+        title: "The published page could not be fetched"
+        description: "Check that the URL is reachable from the application container and that the local domain/proxy is working."
+    http_status:
+        title: "The page does not return a successful HTTP status"
+        description: "Published pages should return a 2xx HTTP response before SEO checks can be trusted."
+    html_content_type:
+        title: "The response is not HTML"
+        description: "SEO checks require a text/html response."
+    title:
+        title: "Page title"
+        description: "Use one descriptive title between 30 and 65 characters."
+    meta_description:
+        title: "Meta description"
+        description: "Use one descriptive meta description between 70 and 160 characters."
+    canonical:
+        title: "Canonical URL"
+        description: "Add a canonical URL that points to this published page."
+    alternates:
+        title: "Alternate language URLs"
+        description: "Generate one rel=alternate hreflang link for each published locale of this site."
+    h1:
+        title: "H1 heading"
+        description: "Use exactly one H1 heading on the page."
+    h1_missing:
+        title: "Missing H1 heading"
+        description: "Add one visible H1 that describes the page topic."
+    h1_multiple:
+        title: "Multiple H1 headings"
+        description: "Keep a single primary H1 and move secondary headings to H2 or lower levels."
+    heading_structure:
+        title: "Heading structure"
+        description: "Use H2 headings to split the page into scannable sections when the content is long enough."
+    image_alt:
+        title: "Image alternative text"
+        description: "Add meaningful alt text to informative images. Decorative images can use an empty alt attribute intentionally."
+    robots:
+        title: "Robots meta tag"
+        description: "The page is indexable according to its robots meta tag."
+    robots_noindex:
+        title: "Robots noindex found"
+        description: "Remove noindex if this published page should be visible in search results."
+    word_count:
+        title: "Content length"
+        description: "Short pages can rank, but strategic pages usually need enough useful copy to explain the topic."
+    robots_reachable:
+        title: "robots.txt is reachable"
+        description: "The site robots.txt endpoint should be publicly reachable and served as text/plain."
+    robots_sitemap_index:
+        title: "robots.txt exposes the sitemap index"
+        description: "When a sitemap index is configured, robots.txt should point crawlers to it."
+    sitemap_index_reachable:
+        title: "Sitemap index is reachable"
+        description: "The configured sitemap index should return a successful XML response."
+    sitemap_index_contains_configured_sitemaps:
+        title: "Sitemap index contains configured sitemaps"
+        description: "The sitemap index should include every configured sitemap and external sitemap URL."
+    sitemap_reachable:
+        title: "Configured sitemaps are reachable"
+        description: "Every configured sitemap URL should return a successful XML response."
+    slash_route_redirect:
+        title: "Root slash redirects to a localized route"
+        description: "When slash_route is enabled, the site root should redirect to one of the configured localized roots."
