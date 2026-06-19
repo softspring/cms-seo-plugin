@@ -74,6 +74,43 @@ php bin/console sfs:cms:seo:analyze --contents
 
 The `--async` option is reserved for projects that replace the default dispatcher with a Messenger-backed implementation.
 
+## Content Analysis Storage
+
+Each content analysis run is stored in the analyzed `ContentVersion` metadata field:
+
+```text
+version.meta.sfs_cms_seo_analysis
+```
+
+The metadata payload contains the analysis timestamp, content id, version id, version number, summary, and per-URL rows with checks, metrics, and details.
+
+When the content SEO tab is opened, the plugin stores the result in the published version. When a version-specific SEO analysis route is used, the plugin stores the result in that version.
+
+If a version already has stored SEO analysis metadata, the admin tab reads and displays that payload without fetching the published URLs again. Editors can use **Update data** to fetch the URLs again, recalculate the checks, and replace the stored metadata.
+
+When **Update data** targets a version that stores compiled content in the database, the admin UI shows a warning because the analyzed HTML can still come from stored compiled content.
+
+The plugin overrides `@SfsCms/admin/content/_read_indexing.html.twig` through `templates/bundles/SfsCmsBundle/admin/content/_read_indexing.html.twig`. The content read screen shows the stored SEO summary for the published version when analysis metadata exists.
+
+## Dashboard
+
+The dashboard reads stored SEO analysis metadata from published versions and shows:
+
+- General statistics for average score, analyzed content, pending content, analyzed URLs, errors, and warnings.
+- Site-level SEO status for robots and sitemaps.
+- Lowest scoring published content.
+- Lowest scoring published URLs.
+
+The dashboard does not recalculate analysis. Editors must open the content SEO tab and use **Update data** when they need fresh content analysis.
+
+The fetcher appends a random `sfs_cms_seo_bust` query parameter to request URLs so analysis reads fresh HTML instead of cached CDN or Varnish content. Public URLs shown in the admin UI keep their canonical form.
+
+## Local Fetch Behavior
+
+When a published URL uses a `.local` host, the fetcher rewrites the request to `http://balancer:8008` and sends the original host in the `Host` header plus `X-Forwarded-Proto: https`.
+
+This avoids resolving local development domains to `127.0.0.1` inside the PHP container, where the host nginx proxy is not listening.
+
 ## Extension Points
 
 Add content SEO checks by implementing `Softspring\CmsSeoPlugin\Content\Check\CheckInterface`. Services are autoconfigured with the `sfs_cms_seo.check` tag.
@@ -81,6 +118,15 @@ Add content SEO checks by implementing `Softspring\CmsSeoPlugin\Content\Check\Ch
 Add site SEO checks by implementing `Softspring\CmsSeoPlugin\Site\Check\SiteCheckInterface`. Services are autoconfigured with the `sfs_cms_seo.site_check` tag.
 
 Replace `Softspring\CmsSeoPlugin\Seo\SeoAnalysisDispatcherInterface` when a project needs asynchronous analysis or an external provider.
+
+The implementation is split so future analysis providers can be added without changing the admin tab contract:
+
+- `PageUrlResolver` resolves CMS URLs for a content item.
+- `PublishedPageFetcher` fetches published pages.
+- `BasicSeoAnalyzer` creates local checks and scores.
+- `SiteAnalyzer` creates site-level checks and scores.
+
+Future providers such as AI analysis, SEMrush, or Ahrefs should add services beside `BasicSeoAnalyzer` and merge their results in the controller or an orchestration service.
 
 ## Features
 

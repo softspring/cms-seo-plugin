@@ -20,9 +20,13 @@ This package extends Softspring CMS with deterministic SEO analysis for publishe
 - Content SEO checks for HTTP status, HTML content type, title, meta description, canonical URL, alternate language URLs, H1 usage, heading structure, image alt text, robots meta tag, and body word count.
 - Site SEO checks for `robots.txt`, sitemap index reachability, sitemap index entries, configured sitemap reachability, and slash route redirects.
 - Stored SEO analysis metadata for content versions.
+- Content SEO tabs reuse stored analysis metadata until editors request fresh data.
+- Content read screens can show stored SEO summaries for published versions.
 - Stored site analysis data under the project `var/` directory.
 - `sfs:cms:seo:analyze` command for content and site analysis.
 - Configurable site analysis checks through `sfs_cms_seo.site_analysis`.
+- Cache-busting fetch requests so analysis can bypass CDN or Varnish HTML.
+- Local `.local` URL fetch rewriting through the project balancer container.
 
 ## Expected Usage
 
@@ -39,6 +43,7 @@ This package extends Softspring CMS with deterministic SEO analysis for publishe
 - Replace `SeoAnalysisDispatcherInterface` to dispatch analysis asynchronously.
 - Override Twig templates through Symfony template resolution.
 - Replace fetcher or analyzer services in the host application when a project needs custom networking or scoring behavior.
+- Add future analysis providers beside `BasicSeoAnalyzer` and merge their results in orchestration code.
 
 ## Current Limits
 
