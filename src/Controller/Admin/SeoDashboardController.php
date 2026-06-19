@@ -26,8 +26,7 @@ class SeoDashboardController extends AbstractController
         protected RouterInterface $router,
         protected SiteAnalysisRunner $siteAnalysisRunner,
         protected ContentSeoAnalysisRunner $contentAnalysisRunner,
-    ) {
-    }
+    ) {}
 
     public function index(): Response
     {
@@ -205,7 +204,7 @@ class SeoDashboardController extends AbstractController
             ];
         }
 
-        usort($rows, static fn (array $left, array $right): int => [$left['score'], -$left['errors'], -$left['warnings']] <=> [$right['score'], -$right['errors'], -$right['warnings']]);
+        usort($rows, static fn(array $left, array $right): int => [$left['score'], -$left['errors'], -$left['warnings']] <=> [$right['score'], -$right['errors'], -$right['warnings']]);
 
         return \array_slice($rows, 0, self::WORST_LIMIT);
     }
@@ -251,7 +250,7 @@ class SeoDashboardController extends AbstractController
             }
         }
 
-        usort($rows, static fn (array $left, array $right): int => [$left['score'], $left['severity']] <=> [$right['score'], $right['severity']]);
+        usort($rows, static fn(array $left, array $right): int => [$left['score'], $left['severity']] <=> [$right['score'], $right['severity']]);
 
         return \array_slice($rows, 0, self::WORST_LIMIT);
     }

@@ -32,7 +32,7 @@ class SitemapIndexReachableCheck implements SiteCheckInterface
         if (null === $resource || null !== $resource->error) {
             return new SeoCheck('sitemap_index_reachable', 'error', 0, [], [
                 'url' => $url,
-                'error' => $resource?->error ?? 'Unknown error',
+                'error' => null === $resource ? 'Unknown error' : $resource->error,
             ]);
         }
 

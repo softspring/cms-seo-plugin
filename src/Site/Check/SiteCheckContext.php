@@ -18,8 +18,7 @@ class SiteCheckContext
     public function __construct(
         public readonly SiteInterface $site,
         private readonly PublicResourceFetcher $fetcher,
-    ) {
-    }
+    ) {}
 
     public function config(): array
     {
@@ -40,9 +39,9 @@ class SiteCheckContext
 
         $scheme = $this->site->getCanonicalScheme() ?? (($this->config()['https_redirect'] ?? true) ? 'https' : 'http');
         $port = $this->site->getCanonicalPort();
-        $portPart = null !== $port && !\in_array($port, [80, 443], true) ? ':'.$port : '';
+        $portPart = null !== $port && !\in_array($port, [80, 443], true) ? ':' . $port : '';
 
-        return $scheme.'://'.$host.$portPart;
+        return $scheme . '://' . $host . $portPart;
     }
 
     public function absoluteUrl(string $path): ?string
@@ -52,7 +51,7 @@ class SiteCheckContext
             return null;
         }
 
-        return rtrim($baseUrl, '/').'/'.ltrim($path, '/');
+        return rtrim($baseUrl, '/') . '/' . ltrim($path, '/');
     }
 
     public function robotsUrl(): ?string
@@ -115,7 +114,7 @@ class SiteCheckContext
             return null;
         }
 
-        return $this->resources[$url.'#no_redirects'] ??= $this->fetcher->fetch($url, 0);
+        return $this->resources[$url . '#no_redirects'] ??= $this->fetcher->fetch($url, 0);
     }
 
     private function canonicalHost(): ?string

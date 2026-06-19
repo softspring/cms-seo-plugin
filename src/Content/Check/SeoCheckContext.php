@@ -52,7 +52,7 @@ class SeoCheckContext
             return '';
         }
 
-        return $this->normalizeText($nodes->item(0)?->textContent ?? '');
+        return $this->normalizeText($nodes->item(0)->textContent);
     }
 
     /**
@@ -182,7 +182,7 @@ class SeoCheckContext
     {
         $foundLocales = $this->foundAlternateLocales($alternates);
 
-        return array_values(array_filter($this->expectedAlternateLocales(), static fn (string $locale): bool => !in_array(strtolower($locale), $foundLocales, true)));
+        return array_values(array_filter($this->expectedAlternateLocales(), static fn(string $locale): bool => !in_array(strtolower($locale), $foundLocales, true)));
     }
 
     /**
@@ -252,8 +252,8 @@ class SeoCheckContext
      */
     private function normalizedLocales(array $locales): array
     {
-        $locales = array_map(static fn (mixed $locale): string => strtolower(trim((string) $locale)), $locales);
-        $locales = array_values(array_filter($locales, static fn (string $locale): bool => '' !== $locale));
+        $locales = array_map(static fn(mixed $locale): string => strtolower(trim((string) $locale)), $locales);
+        $locales = array_values(array_filter($locales, static fn(string $locale): bool => '' !== $locale));
 
         return array_values(array_unique($locales));
     }

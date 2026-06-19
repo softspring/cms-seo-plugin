@@ -20,8 +20,7 @@ class SiteAnalyzer
         private readonly SiteChecksLoader $checksLoader,
         private readonly PublicResourceFetcher $fetcher,
         private readonly array $config,
-    ) {
-    }
+    ) {}
 
     public function analyze(SiteInterface $site): SeoAnalysisResult
     {
@@ -66,7 +65,7 @@ class SiteAnalyzer
             return 0;
         }
 
-        return (int) round(array_sum(array_map(static fn (SeoCheck $check): int => $check->score, $checks)) / \count($checks));
+        return (int) round(array_sum(array_map(static fn(SeoCheck $check): int => $check->score, $checks)) / \count($checks));
     }
 
     /**

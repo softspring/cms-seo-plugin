@@ -23,6 +23,6 @@ class SfsCmsSeoPlugin extends SfsCmsPlugin
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
-        $container->addCompilerPass(new AddTwigBundlesNamespacesPass($this->getPath().'/templates'));
+        $container->addCompilerPass(new AddTwigBundlesNamespacesPass($this->getPath() . '/templates'));
     }
 }

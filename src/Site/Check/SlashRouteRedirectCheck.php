@@ -37,7 +37,7 @@ class SlashRouteRedirectCheck implements SiteCheckInterface
             return new SeoCheck('slash_route_redirect', 'error', 0, [], [
                 'url' => $url ?? '-',
                 'expected' => $expectedLocations,
-                'error' => $resource?->error ?? 'Unknown error',
+                'error' => null === $resource ? 'Unknown error' : $resource->error,
             ]);
         }
 
@@ -81,7 +81,7 @@ class SlashRouteRedirectCheck implements SiteCheckInterface
 
             $path = (string) $pathConfig['path'];
             if (!empty($pathConfig['trailing_slash_on_root'])) {
-                $path = rtrim($path, '/').'/';
+                $path = rtrim($path, '/') . '/';
             }
 
             $url = $context->absoluteUrl($path);

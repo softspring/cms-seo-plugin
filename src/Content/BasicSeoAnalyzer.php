@@ -22,8 +22,7 @@ class BasicSeoAnalyzer
 {
     public function __construct(
         private readonly ?ChecksLoader $checksLoader = null,
-    ) {
-    }
+    ) {}
 
     public function analyze(PageUrl $pageUrl, PublishedPage $page): SeoAnalysisResult
     {
@@ -67,7 +66,7 @@ class BasicSeoAnalyzer
     {
         $document = new \DOMDocument();
         $previous = libxml_use_internal_errors(true);
-        $document->loadHTML('<?xml encoding="UTF-8">'.$html, \LIBXML_NOWARNING | \LIBXML_NOERROR | \LIBXML_NONET);
+        $document->loadHTML('<?xml encoding="UTF-8">' . $html, \LIBXML_NOWARNING | \LIBXML_NOERROR | \LIBXML_NONET);
         libxml_clear_errors();
         libxml_use_internal_errors($previous);
 
@@ -98,7 +97,7 @@ class BasicSeoAnalyzer
             return 0;
         }
 
-        return (int) round(array_sum(array_map(static fn (SeoCheck $check): int => $check->score, $checks)) / \count($checks));
+        return (int) round(array_sum(array_map(static fn(SeoCheck $check): int => $check->score, $checks)) / \count($checks));
     }
 
     /**

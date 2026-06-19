@@ -17,8 +17,7 @@ class SiteSeoController extends AbstractController
     public function __construct(
         private readonly CmsConfig $cmsConfig,
         private readonly SiteAnalysisRunner $siteAnalysisRunner,
-    ) {
-    }
+    ) {}
 
     public function seo(Request $request): Response
     {
@@ -26,7 +25,7 @@ class SiteSeoController extends AbstractController
         $refresh = $request->isMethod('POST') && $request->request->getBoolean('refresh');
 
         if ($refresh) {
-            if (!$this->isCsrfTokenValid('sfs_cms_seo_analyze_site_'.$site->getId(), (string) $request->request->get('_token'))) {
+            if (!$this->isCsrfTokenValid('sfs_cms_seo_analyze_site_' . $site->getId(), (string) $request->request->get('_token'))) {
                 throw $this->createAccessDeniedException('Invalid CSRF token.');
             }
 

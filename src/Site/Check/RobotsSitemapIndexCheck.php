@@ -34,7 +34,7 @@ class RobotsSitemapIndexCheck implements SiteCheckInterface
             return new SeoCheck('robots_sitemap_index', 'warning', 50, [], [
                 'url' => $robotsUrl ?? '-',
                 'expected' => $sitemapIndexUrl,
-                'error' => $resource?->error ?? 'robots.txt is not reachable',
+                'error' => null === $resource ? 'robots.txt is not reachable' : ($resource->error ?? 'robots.txt is not reachable'),
             ]);
         }
 
@@ -46,7 +46,7 @@ class RobotsSitemapIndexCheck implements SiteCheckInterface
             'value' => '' !== $found ? $found : '-',
         ];
 
-        if (!str_contains($content, 'Sitemap: '.$sitemapIndexUrl)) {
+        if (!str_contains($content, 'Sitemap: ' . $sitemapIndexUrl)) {
             return new SeoCheck('robots_sitemap_index', 'warning', 50, ['expected' => $sitemapIndexUrl], $details);
         }
 

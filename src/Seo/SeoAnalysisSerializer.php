@@ -16,7 +16,7 @@ class SeoAnalysisSerializer
             'severity' => $analysis->severity,
             'metrics' => $analysis->metrics,
             'sources' => $analysis->sources,
-            'checks' => array_map(fn (SeoCheck $check): array => $this->serializeCheck($check), $analysis->checks),
+            'checks' => array_map(fn(SeoCheck $check): array => $this->serializeCheck($check), $analysis->checks),
         ];
     }
 

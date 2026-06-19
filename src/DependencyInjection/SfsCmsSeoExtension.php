@@ -23,7 +23,7 @@ class SfsCmsSeoExtension extends Extension
         $container->registerForAutoconfiguration(CheckInterface::class)->addTag('sfs_cms_seo.check');
         $container->registerForAutoconfiguration(SiteCheckInterface::class)->addTag('sfs_cms_seo.site_check');
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../config/services'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config/services'));
         $loader->load('services.yaml');
     }
 }

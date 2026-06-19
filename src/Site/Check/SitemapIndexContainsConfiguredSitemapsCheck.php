@@ -36,12 +36,12 @@ class SitemapIndexContainsConfiguredSitemapsCheck implements SiteCheckInterface
                 'url' => $sitemapIndexUrl,
                 'expected' => $expectedUrls,
                 'missing' => $expectedUrls,
-                'error' => $resource?->error ?? 'sitemap index is not reachable',
+                'error' => null === $resource ? 'sitemap index is not reachable' : ($resource->error ?? 'sitemap index is not reachable'),
             ]);
         }
 
         $foundUrls = $this->extractLocUrls($resource->content);
-        $missingUrls = array_values(array_filter($expectedUrls, static fn (string $expectedUrl): bool => !\in_array($expectedUrl, $foundUrls, true)));
+        $missingUrls = array_values(array_filter($expectedUrls, static fn(string $expectedUrl): bool => !\in_array($expectedUrl, $foundUrls, true)));
         $details = [
             'url' => $sitemapIndexUrl,
             'expected' => $expectedUrls,

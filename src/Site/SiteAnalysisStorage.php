@@ -8,8 +8,7 @@ class SiteAnalysisStorage
 {
     public function __construct(
         private readonly string $storageDir,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, mixed>|null
@@ -32,7 +31,7 @@ class SiteAnalysisStorage
     public function save(string $siteId, array $analysis): void
     {
         if (!is_dir($this->storageDir)) {
-            mkdir($this->storageDir, 0775, true);
+            mkdir($this->storageDir, 0o775, true);
         }
 
         file_put_contents($this->file($siteId), json_encode($analysis, \JSON_PRETTY_PRINT | \JSON_THROW_ON_ERROR));
@@ -40,6 +39,6 @@ class SiteAnalysisStorage
 
     private function file(string $siteId): string
     {
-        return rtrim($this->storageDir, '/').'/'.preg_replace('/[^a-zA-Z0-9_.-]/', '_', $siteId).'.json';
+        return rtrim($this->storageDir, '/') . '/' . preg_replace('/[^a-zA-Z0-9_.-]/', '_', $siteId) . '.json';
     }
 }

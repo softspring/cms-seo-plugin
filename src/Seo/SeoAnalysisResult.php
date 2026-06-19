@@ -17,6 +17,5 @@ final readonly class SeoAnalysisResult
         public array $checks,
         public array $metrics,
         public array $sources = ['published_page'],
-    ) {
-    }
+    ) {}
 }

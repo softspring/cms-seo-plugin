@@ -10,8 +10,7 @@ class PublicResourceFetcher
 {
     public function __construct(
         protected HttpClientInterface $httpClient,
-    ) {
-    }
+    ) {}
 
     public function fetch(string $publicUrl, int $maxRedirects = 5): PublicResource
     {
@@ -52,10 +51,10 @@ class PublicResourceFetcher
 
         $path = parse_url($cacheBustedPublicUrl, \PHP_URL_PATH);
         $query = parse_url($cacheBustedPublicUrl, \PHP_URL_QUERY);
-        $pathAndQuery = (\is_string($path) && '' !== $path ? $path : '/').(\is_string($query) && '' !== $query ? '?'.$query : '');
+        $pathAndQuery = (\is_string($path) && '' !== $path ? $path : '/') . (\is_string($query) && '' !== $query ? '?' . $query : '');
 
         return [
-            'http://balancer:8008'.$pathAndQuery,
+            'http://balancer:8008' . $pathAndQuery,
             $headers + [
                 'Host' => $host,
                 'X-Forwarded-Host' => $host,
@@ -69,6 +68,6 @@ class PublicResourceFetcher
     {
         $separator = str_contains($url, '?') ? '&' : '?';
 
-        return $url.$separator.'sfs_cms_seo_bust='.bin2hex(random_bytes(8));
+        return $url . $separator . 'sfs_cms_seo_bust=' . bin2hex(random_bytes(8));
     }
 }

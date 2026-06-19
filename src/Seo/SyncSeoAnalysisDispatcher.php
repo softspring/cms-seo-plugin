@@ -12,8 +12,7 @@ class SyncSeoAnalysisDispatcher implements SeoAnalysisDispatcherInterface
     public function __construct(
         private readonly SiteAnalysisRunner $siteAnalysisRunner,
         private readonly ContentSeoAnalysisRunner $contentAnalysisRunner,
-    ) {
-    }
+    ) {}
 
     public function analyze(bool $sites, bool $contents, bool $async): array
     {

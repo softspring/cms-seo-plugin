@@ -13,8 +13,7 @@ final readonly class PublicResource
         public ?string $content,
         public ?string $location = null,
         public ?string $error = null,
-    ) {
-    }
+    ) {}
 
     public function isSuccessful(): bool
     {

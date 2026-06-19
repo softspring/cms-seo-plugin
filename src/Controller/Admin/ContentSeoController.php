@@ -34,8 +34,7 @@ class ContentSeoController extends AbstractController
         protected PageUrlResolver $pageUrlResolver,
         protected PublishedPageFetcher $publishedPageFetcher,
         protected BasicSeoAnalyzer $basicSeoAnalyzer,
-    ) {
-    }
+    ) {}
 
     public function seo(Request $request): Response
     {
@@ -197,12 +196,12 @@ class ContentSeoController extends AbstractController
     {
         $analysis = [
             'schema' => 1,
-            'analyzedAt' => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
+            'analyzedAt' => new \DateTimeImmutable()->format(\DateTimeInterface::ATOM),
             'contentId' => (string) $content->getId(),
             'versionId' => (string) $version->getId(),
             'versionNumber' => $version->getVersionNumber(),
             'summary' => $summary,
-            'rows' => array_map(fn (array $row): array => $this->serializeRow($row), $rows),
+            'rows' => array_map(fn(array $row): array => $this->serializeRow($row), $rows),
         ];
 
         $version->setMetaField(self::META_FIELD, $analysis);
@@ -244,7 +243,7 @@ class ContentSeoController extends AbstractController
             'severity' => $analysis->severity,
             'metrics' => $analysis->metrics,
             'sources' => $analysis->sources,
-            'checks' => array_map(fn (SeoCheck $check): array => $this->serializeCheck($check), $analysis->checks),
+            'checks' => array_map(fn(SeoCheck $check): array => $this->serializeCheck($check), $analysis->checks),
         ];
     }
 

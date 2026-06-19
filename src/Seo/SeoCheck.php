@@ -16,6 +16,5 @@ final readonly class SeoCheck
         public int $score,
         public array $data = [],
         public array $details = [],
-    ) {
-    }
+    ) {}
 }

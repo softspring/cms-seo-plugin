@@ -16,8 +16,7 @@ class SiteAnalysisRunner
         private readonly SiteAnalyzer $siteAnalyzer,
         private readonly SiteAnalysisStorage $storage,
         private readonly SeoAnalysisSerializer $serializer,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<int, array<string, mixed>>
@@ -84,7 +83,7 @@ class SiteAnalysisRunner
     {
         return [
             'schema' => 1,
-            'analyzedAt' => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
+            'analyzedAt' => new \DateTimeImmutable()->format(\DateTimeInterface::ATOM),
             'site' => [
                 'id' => (string) $site->getId(),
                 'host' => $site->getCanonicalHost(),

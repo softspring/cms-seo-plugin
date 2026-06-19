@@ -15,6 +15,5 @@ final readonly class PageUrl
         public string $path,
         public string $url,
         public string $locale,
-    ) {
-    }
+    ) {}
 }

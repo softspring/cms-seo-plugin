@@ -24,8 +24,7 @@ class ContentSeoAnalysisRunner
         private readonly PublishedPageFetcher $publishedPageFetcher,
         private readonly BasicSeoAnalyzer $basicSeoAnalyzer,
         private readonly SeoAnalysisSerializer $serializer,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array{contents: int, urls: int, errors: int, warnings: int}
@@ -130,12 +129,12 @@ class ContentSeoAnalysisRunner
     {
         $payload = [
             'schema' => 1,
-            'analyzedAt' => (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM),
+            'analyzedAt' => new \DateTimeImmutable()->format(\DateTimeInterface::ATOM),
             'contentId' => (string) $content->getId(),
             'versionId' => null !== $version ? (string) $version->getId() : null,
             'versionNumber' => $version?->getVersionNumber(),
             'summary' => $summary,
-            'rows' => array_map(fn (array $row): array => $this->serializeRow($row), $rows),
+            'rows' => array_map(fn(array $row): array => $this->serializeRow($row), $rows),
         ];
 
         if ($version instanceof ContentVersionInterface) {

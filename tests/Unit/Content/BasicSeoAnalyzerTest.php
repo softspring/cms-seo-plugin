@@ -107,7 +107,7 @@ class BasicSeoAnalyzerTest extends TestCase
             }
         };
 
-        $result = (new BasicSeoAnalyzer(new ChecksLoader([$check])))->analyze(
+        $result = new BasicSeoAnalyzer(new ChecksLoader([$check]))->analyze(
             new PageUrl($site, new RoutePath(), '/es/inicio', 'https://example.org/es/inicio', 'es'),
             new PublishedPage('https://example.org/es/inicio', 200, 'text/html; charset=utf-8', $this->html([])),
         );
@@ -130,8 +130,7 @@ class BasicSeoAnalyzerTest extends TestCase
         $routePath->setLocale('es');
 
         if (null !== $contentLocales) {
-            $content = new class extends Content {
-            };
+            $content = new class extends Content {};
             $content->setLocales($contentLocales);
 
             $route = new Route();
@@ -139,7 +138,7 @@ class BasicSeoAnalyzerTest extends TestCase
             $content->addRoute($route);
         }
 
-        return (new BasicSeoAnalyzer())->analyze(
+        return new BasicSeoAnalyzer()->analyze(
             new PageUrl($site, $routePath, '/es/inicio', 'https://example.org/es/inicio', 'es'),
             new PublishedPage('https://example.org/es/inicio', 200, 'text/html; charset=utf-8', $html),
         );
@@ -156,21 +155,21 @@ class BasicSeoAnalyzerTest extends TestCase
         }
 
         return sprintf(<<<HTML
-<!doctype html>
-<html>
-<head>
-    <title>Example SEO title for testing</title>
-    <meta name="description" content="This is a useful meta description with enough length to pass the deterministic SEO description check.">
-    <link rel="canonical" href="https://example.org/es/inicio">
-    %s
-</head>
-<body>
-    <h1>Example heading</h1>
-    <h2>Section heading</h2>
-    <p>%s</p>
-</body>
-</html>
-HTML, $alternateHtml, str_repeat('word ', 260));
+            <!doctype html>
+            <html>
+            <head>
+                <title>Example SEO title for testing</title>
+                <meta name="description" content="This is a useful meta description with enough length to pass the deterministic SEO description check.">
+                <link rel="canonical" href="https://example.org/es/inicio">
+                %s
+            </head>
+            <body>
+                <h1>Example heading</h1>
+                <h2>Section heading</h2>
+                <p>%s</p>
+            </body>
+            </html>
+            HTML, $alternateHtml, str_repeat('word ', 260));
     }
 
     private function check(SeoAnalysisResult $result, string $code): SeoCheck

@@ -12,8 +12,7 @@ final readonly class PublishedPage
         public ?string $contentType,
         public ?string $html,
         public ?string $error = null,
-    ) {
-    }
+    ) {}
 
     public function isHtml(): bool
     {
