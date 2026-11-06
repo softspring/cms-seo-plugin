@@ -16,6 +16,10 @@ It analyzes published CMS URLs and reports deterministic checks for HTTP status,
 
 It also supports site-level checks for `robots.txt`, sitemap indexes, configured sitemaps, and root slash redirects.
 
+## Documentation
+
+[Armonic documentation](https://armonic.softspring.es/6.0/bundles/cms-seo-plugin)
+
 ## Installation
 
 ```bash
