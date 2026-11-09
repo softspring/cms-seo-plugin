@@ -18,7 +18,7 @@ It also supports site-level checks for `robots.txt`, sitemap indexes, configured
 
 ## Documentation
 
-Read the [experimental cms-seo-plugin guide](https://armonic.softspring.es/6.1@dev/docs/bundles/cms-seo-plugin).
+Read the [experimental cms-seo-plugin guide](https://armonic.softspring.es/6.1@dev/bundles/cms-seo-plugin).
 
 ## Installation
 
