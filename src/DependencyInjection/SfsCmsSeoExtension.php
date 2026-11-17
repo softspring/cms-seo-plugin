@@ -19,6 +19,7 @@ class SfsCmsSeoExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('sfs_cms_seo.site_analysis', $config['site_analysis']);
+        $container->setParameter('sfs_cms_seo.word_statistics', $config['word_statistics']);
 
         $container->registerForAutoconfiguration(CheckInterface::class)->addTag('sfs_cms_seo.check');
         $container->registerForAutoconfiguration(SiteCheckInterface::class)->addTag('sfs_cms_seo.site_check');

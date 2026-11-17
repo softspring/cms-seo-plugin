@@ -48,6 +48,11 @@
             </div>
         {% endif %}
 
+        {% set word_statistics_version = target_version ?: content_entity.lastVersion %}
+        {% if word_statistics_version %}
+            {% include '@SfsCmsSeoPlugin/admin/content/_word_statistics.html.twig' with {'version': word_statistics_version} only %}
+        {% endif %}
+
         {% if rows is empty %}
             <div class="alert alert-warning">{{ 'seo.no_urls'|trans }}</div>
         {% else %}

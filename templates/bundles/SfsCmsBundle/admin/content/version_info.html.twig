@@ -1,0 +1,6 @@
+{% extends '@!SfsCms/admin/content/version_info.html.twig' %}
+
+{% block version_info_seo %}
+    {{ parent() }}
+    {% include '@SfsCmsSeoPlugin/admin/content/_word_statistics.html.twig' with {'version': version_entity} only %}
+{% endblock %}

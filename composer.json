@@ -8,6 +8,7 @@
         "ext-dom": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
+        "psr/log": "^1.1 || ^2.0 || ^3.0",
         "softspring/cms-bundle": "6.1.*@dev",
         "symfony/config": "^6.4 || ^7.4 || ^8.0",
         "symfony/console": "^6.4 || ^7.4 || ^8.0",
@@ -17,7 +18,8 @@
         "symfony/http-client-contracts": "^3.5",
         "symfony/http-foundation": "^6.4 || ^7.4 || ^8.0",
         "symfony/http-kernel": "^6.4 || ^7.4 || ^8.0",
-        "symfony/routing": "^6.4 || ^7.4 || ^8.0"
+        "symfony/routing": "^6.4 || ^7.4 || ^8.0",
+        "twig/twig": "^3.4"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.50",

@@ -2,7 +2,7 @@
 
 Functional definition for `softspring/cms-seo-plugin`.
 
-This package extends Softspring CMS with deterministic SEO analysis for published content URLs and configured CMS sites.
+This package extends Softspring CMS with deterministic SEO analysis for published content URLs, configured CMS sites, and rendered content version word statistics.
 
 ## Purpose
 
@@ -47,7 +47,18 @@ This package extends Softspring CMS with deterministic SEO analysis for publishe
 
 ## Current Limits
 
-- The package depends on public URLs being reachable from the application runtime.
+- Published URL checks depend on public URLs being reachable from the application runtime.
 - The default dispatcher runs synchronously.
 - The default checks are deterministic and do not use external SEO providers.
 - The package does not ship frontend assets.
+
+## Content version word statistics
+
+- Analyze rendered version containers without publishing or persisting compiled output.
+- Separate word frequency and semantic emphasis rankings, with counts, density and tag contexts.
+- Filter built-in English and Spanish stop words, with configurable additions for any language.
+- Configure heading and emphasis weights; nested formatting uses the highest weight once per occurrence.
+- Reuse the VersionWordStatistics service and sfs_cms_seo_word_statistics Twig function.
+- Show the same statistics in version information and the SEO Analysis tab.
+- Provide an optional query to API/MCP integrations without depending on either plugin or an AI provider.
+- Analyze server-rendered containers only; layout text, metadata, CSS computed visibility and semantic keyword research are outside this scope.
