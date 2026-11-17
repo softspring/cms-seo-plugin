@@ -1,0 +1,57 @@
+{% trans_default_domain 'sfs_cms_seo' %}
+
+<section class="card my-3" data-seo-word-statistics="{{ version.id }}">
+    <div class="card-body">
+        <h3 class="h5">{{ 'word_statistics.title'|trans }} <span class="badge bg-light text-dark">v{{ version.versionNumber }}</span></h3>
+        <p class="small text-muted">{{ 'word_statistics.help'|trans }}</p>
+        {% for locale in version.content.locales %}
+            {% set statistics = sfs_cms_seo_word_statistics(version, locale) %}
+            <details class="border rounded p-2 mb-2" {% if locale == version.content.defaultLocale %}open{% endif %}>
+                <summary class="fw-bold">{{ locale|upper }}</summary>
+                {% if statistics.ok %}
+                    <p class="small my-2">
+                        {{ 'word_statistics.summary'|trans({'%total%': statistics.summary.wordCount, '%analyzed%': statistics.summary.analyzedWordCount, '%unique%': statistics.summary.uniqueWordCount}) }}
+                    </p>
+                    {% if not statistics.parameters.builtInStopWords %}
+                        <p class="small text-muted">{{ 'word_statistics.no_stop_words'|trans }}</p>
+                    {% endif %}
+                    {% for ranking in ['frequentTerms', 'prominentTerms'] %}
+                        <h4 class="h6 mt-3">{{ ('word_statistics.'~ranking)|trans }}</h4>
+                        <div class="table-responsive">
+                            <table class="table table-sm small align-middle">
+                                <thead><tr>
+                                    <th scope="col">{{ 'word_statistics.word'|trans }}</th>
+                                    <th scope="col">{{ 'word_statistics.count'|trans }}</th>
+                                    <th scope="col">{{ 'word_statistics.density'|trans }}</th>
+                                    <th scope="col">{{ 'word_statistics.highlighted'|trans }}</th>
+                                    <th scope="col">{{ 'word_statistics.weight'|trans }}</th>
+                                </tr></thead>
+                                <tbody>
+                                {% for term in attribute(statistics, ranking) %}
+                                    <tr>
+                                        <th scope="row" class="text-nowrap">{{ term.word }}</th>
+                                        <td>{{ term.count }}</td>
+                                        <td>{{ term.density }}%</td>
+                                        <td>
+                                            {% for tag, count in term.contexts %}
+                                                {% if count %}<span class="badge bg-light text-dark me-1">{{ tag }}: {{ count }}</span>{% endif %}
+                                            {% else %}—{% endfor %}
+                                            {% if not term.highlightedCount %}—{% endif %}
+                                        </td>
+                                        <td>{{ term.highlightScore }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr><td colspan="5" class="text-muted">{{ 'word_statistics.empty'|trans }}</td></tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-warning small mt-2 mb-0">{{ 'word_statistics.unavailable'|trans }}</p>
+                {% endif %}
+            </details>
+        {% endfor %}
+        <p class="small text-muted mb-0">{{ 'word_statistics.method'|trans }}</p>
+    </div>
+</section>

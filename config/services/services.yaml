@@ -11,6 +11,10 @@ services:
     Softspring\CmsSeoPlugin\Seo\SeoAnalysisDispatcherInterface:
         alias: Softspring\CmsSeoPlugin\Seo\SyncSeoAnalysisDispatcher
 
+    Softspring\CmsSeoPlugin\Content\WordStatistics\HtmlWordStatistics:
+        arguments:
+            $config: '%sfs_cms_seo.word_statistics%'
+
     Softspring\CmsSeoPlugin\Content\Check\ChecksLoader:
         arguments:
             $checks: !tagged_iterator sfs_cms_seo.check
